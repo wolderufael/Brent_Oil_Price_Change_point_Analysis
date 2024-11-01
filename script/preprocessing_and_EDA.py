@@ -66,17 +66,5 @@ class Preprocessor:
             summary_df = pd.DataFrame(summary_list, index=['Price'])
             
             return summary_df
-        
-    def plot_time_series(self,df):
-        df['Date'] = pd.to_datetime(df['Date'])
-        df.set_index('Date', inplace=True)
-        df.dropna(inplace=True)
-
-        # Plot the data
-        plt.figure(figsize=(10, 6))
-        plt.plot(df['Price'], label='Price')
-        plt.title("Brent Oil Prices Over Time")
-        plt.xlabel("Date")
-        plt.ylabel("Price")
-        plt.legend()
-        plt.show()
+    def save_data(self,df,file_path):
+            df.to_csv(file_path)
