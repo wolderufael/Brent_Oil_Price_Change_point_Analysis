@@ -19,7 +19,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v3
       with:
-        python-version: '3.9'  # Specify the Python version you need
+        python-version: '3.12.5'  
 
     - name: Install dependencies
       run: |
@@ -38,4 +38,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: test-results
-        path: ./test-reports/  # Adjust based on your output path
+        path: ./test-reports/  

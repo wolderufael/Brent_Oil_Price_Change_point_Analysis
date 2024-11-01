@@ -1,6 +1,8 @@
 import pandas as pd
 import re
 import matplotlib.pyplot as plt
+from statsmodels.tsa.stattools import adfuller
+import statsmodels.api as sm
 
 class Preprocessor:
     def __init__(self):
@@ -66,5 +68,67 @@ class Preprocessor:
             summary_df = pd.DataFrame(summary_list, index=['Price'])
             
             return summary_df
+        
     def save_data(self,df,file_path):
             df.to_csv(file_path)
+            
+    def visualize_time_series(self ,df):    
+        # Set the date column as index
+        df['Date'] = pd.to_datetime(df['Date'])
+        df.set_index(df['Date'], inplace=True)  
+        
+        # Line plot
+        plt.figure(figsize=(14, 6))
+        plt.subplot(3, 1, 1)
+        plt.plot(df['Price'], label='Price')
+        plt.title("Brent Oil Prices Over Time")
+        plt.xlabel("Date")
+        plt.ylabel("Price")
+        plt.legend()
+        
+        # Seasonal plot
+        plt.subplot(3, 1, 2)
+        sm.tsa.seasonal_decompose(df['Price'], model='additive', period=365).plot()
+        plt.title('Seasonal Decomposition')
+        
+        # Autocorrelation plot
+        plt.subplot(3, 1, 3)
+        sm.graphics.tsa.plot_acf(df['Price'], lags=40)
+        plt.title('Autocorrelation Plot')
+        
+        plt.tight_layout()
+        plt.show()
+            
+    def plot_time_series(self,df):
+        df['Date'] = pd.to_datetime(df['Date'])
+        df.set_index('Date', inplace=True)
+        df.dropna(inplace=True)
+
+        # Plot the data
+        plt.figure(figsize=(10, 6))
+        plt.plot(df['Price'], label='Price')
+        plt.title("Brent Oil Prices Over Time")
+        plt.xlabel("Date")
+        plt.ylabel("Price")
+        plt.legend()
+        plt.show()
+        
+    def decompose_time_series(self,df):
+        # Set the date column as index
+        df['Date'] = pd.to_datetime(df['Date'])
+        df.set_index('Date', inplace=True)
+         
+         
+        # Set the frequency of the Date index (e.g., daily = 'D', monthly = 'M')
+        df = df.asfreq('D')  # Adjust 'D' to the correct frequency of your data
+
+        # Decompose the time series with specified period if needed
+        decomposition = sm.tsa.seasonal_decompose(df['Price'], model='additive', period=12)
+         
+         
+        # Decompose the time series
+        # decomposition = sm.tsa.seasonal_decompose(df['Price'], model='additive')
+        fig = decomposition.plot()
+        fig.set_size_inches(14, 10)
+        plt.title('Time Series Decomposition')
+        plt.show()
