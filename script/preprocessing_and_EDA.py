@@ -1,5 +1,6 @@
 import pandas as pd
 import re
+import matplotlib.pyplot as plt
 
 class Preprocessor:
     def __init__(self):
@@ -41,5 +42,41 @@ class Preprocessor:
         # Apply the parse_date function to each element in the column
         df['Date'] = df['Date'].apply(parse_date)
         return df
+    
+    def summarize_dataset(self,df):
+            summary_list = []
+            summary_stats = {
+                    'Min' : df['Price'].min(),
+                    'Max' : df['Price'].max(),
+                    'Mean': df['Price'].mean(),
+                    'Median': df['Price'].median(),
+                    'Mode': df['Price'].mode().iloc[0],  # Taking the first mode in case of multiple modes
+                    'Standard Deviation': df['Price'].std(),
+                    'Variance': df['Price'].var(),
+                    'Range': df['Price'].max() - df['Price'].min(),
+                    'IQR': df['Price'].quantile(0.75) - df['Price'].quantile(0.25),
+                    'Skewness': df['Price'].skew(),
+                    'Kurtosis': df['Price'].kurtosis()
+                }
+                
+            # Append the summary statistics for the current column to the list
+            summary_list.append(summary_stats)
+            
+            # Convert summary stats list to DataFrame with appropriate index
+            summary_df = pd.DataFrame(summary_list, index=['Price'])
+            
+            return summary_df
+        
+    def plot_time_series(self,df):
+        df['Date'] = pd.to_datetime(df['Date'])
+        df.set_index('Date', inplace=True)
+        df.dropna(inplace=True)
 
-
+        # Plot the data
+        plt.figure(figsize=(10, 6))
+        plt.plot(df['Price'], label='Price')
+        plt.title("Brent Oil Prices Over Time")
+        plt.xlabel("Date")
+        plt.ylabel("Price")
+        plt.legend()
+        plt.show()
