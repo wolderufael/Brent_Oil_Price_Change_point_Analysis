@@ -93,7 +93,7 @@ class Preprocessor:
         
         # Autocorrelation plot
         plt.subplot(3, 1, 3)
-        sm.graphics.tsa.plot_acf(df['Price'], lags=40)
+        sm.graphics.tsa.plot_acf(df['Price'], lags=365)
         plt.title('Autocorrelation Plot')
         
         plt.tight_layout()
