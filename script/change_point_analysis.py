@@ -6,10 +6,7 @@ import pymc as pm
 from statsmodels.tsa.stattools import adfuller
 import statsmodels.api as sm
 
-class Analyzer:  
-    
-        
-        
+class Analyzer:         
     def cusum_plot(self,df):
         mean_price=df['Price'].mean()
         cusum=np.cumsum(df['Price']-mean_price)
