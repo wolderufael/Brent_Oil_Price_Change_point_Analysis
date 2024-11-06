@@ -25,22 +25,22 @@ with open(model_path, 'rb') as file:
         model = pickle.load(file)
 scaler = joblib.load(scaler_path)
 
-def lstm_predict_future(model, scaler,start_date, predict_days=30, time_step=60):
-    # last_data = data[['Price']].values[-time_step:]
-    endDate = start_date
-    startDate = endDate - timedelta(days=time_step)
-    brent_data = yf.download("BZ=F", start=startDate.strftime('%Y-%m-%d'), end=endDate.strftime('%Y-%m-%d'))
-    brent_data.index = brent_data.index.date
-    brent_data = brent_data.reset_index().rename(columns={"index": "Date"})
-    all_dates = pd.date_range(start=startDate, end=endDate)
-    brent_data = brent_data.set_index("Date").reindex(all_dates, method='ffill').reset_index()
-    brent_data = brent_data.rename(columns={"index": "Date"})
-    brent_data = brent_data.tail(60)
-    last_data = brent_data[['Close']].values
+def lstm_predict_future(data,model, scaler,start_date, predict_days=30, time_step=60):
+    last_data = data[['Price']].values[-time_step:]
+    # endDate = start_date
+    # startDate = endDate - timedelta(days=time_step)
+    # brent_data = yf.download("BZ=F", start=startDate.strftime('%Y-%m-%d'), end=endDate.strftime('%Y-%m-%d'))
+    # brent_data.index = brent_data.index.date
+    # brent_data = brent_data.reset_index().rename(columns={"index": "Date"})
+    # all_dates = pd.date_range(start=startDate, end=endDate)
+    # brent_data = brent_data.set_index("Date").reindex(all_dates, method='ffill').reset_index()
+    # brent_data = brent_data.rename(columns={"index": "Date"})
+    # brent_data = brent_data.tail(60)
+    # last_data = brent_data[['Close']].values
     last_data_scaled = scaler.transform(last_data.reshape(-1, 1))
     input_seq = last_data_scaled.reshape(1, time_step, 1)
     predictions = []
-    current_date = pd.to_datetime(brent_data['Date'].iloc[-1]) + timedelta(days=1)
+    current_date = pd.to_datetime(data['Date'].iloc[-1]) + timedelta(days=1)
 
     for _ in range(predict_days):
         predicted_price_scaled = model.predict(input_seq)
@@ -89,7 +89,7 @@ def predict():
     # print(start_date,end_date)
     
     num_days = (end_date - start_date).days
-    predictions=lstm_predict_future(model, scaler,start_date, num_days)
+    predictions=lstm_predict_future(df,model, scaler,start_date, num_days)
     
     response_data = predictions.to_dict(orient='dict')
     # print(response_data)

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import axios from "axios";
 import { Line } from "react-chartjs-2";
 import DatePicker from "react-datepicker";
@@ -10,6 +10,10 @@ const PredictionPlot = () => {
   const [endDate, setEndDate] = useState(null);
   const [predictions, setPredictions] = useState([]);
   const [loading, setLoading] = useState(false); // New loading state
+
+   useEffect(() => {
+     setStartDate(new Date("2022-11-14"));
+   }, []);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -29,8 +33,8 @@ const PredictionPlot = () => {
 
     try {
       const response = await axios.post(
-        // "http://localhost:5000/api/predict",
-        "https://brent-oil-price-change-point-analysis.onrender.com/api/predict",
+        "http://localhost:5000/api/predict",
+        // "https://brent-oil-price-change-point-analysis.onrender.com/api/predict",
         {
           start_date: startDate.toISOString().split("T")[0],
           end_date: endDate.toISOString().split("T")[0],
@@ -68,16 +72,18 @@ const PredictionPlot = () => {
 
   return (
     <div className="predict-container">
-      <p className="plot-title">Predict Future Prices</p>
+      <p className="plot-title">Predict Future Prices After Nov 14,2022</p>
       <div className="date-range-container">
         <div>
           <label className="analysis-dropdown-label">Start Date:</label>
           <DatePicker
+            // selected={new Date("2022-11-14")}
             selected={startDate}
-            onChange={(date) => setStartDate(date)}
+            disabled
+            // onChange={(date) => setStartDate(date)}
             // minDate={new Date()}
-            minDate={new Date("2000-01-01")}
-            maxDate={new Date(new Date().setDate(new Date().getDate() - 1))}
+            // minDate={new Date("2000-01-01")}
+            // maxDate={new Date(new Date().setDate(new Date().getDate() - 1))}
           />
         </div>
         <div>
@@ -85,7 +91,7 @@ const PredictionPlot = () => {
           <DatePicker
             selected={endDate}
             onChange={(date) => setEndDate(date)}
-            minDate={startDate}
+            minDate={new Date("2022-11-14")}
           />
         </div>
       </div>
