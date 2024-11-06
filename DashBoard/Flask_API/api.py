@@ -64,7 +64,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Load data
-df = pd.read_csv('data/brent_oil_price_data.csv')
+df = pd.read_csv('public/brent_oil_price_data.csv')
 # Uncomment and load the macroeconomic data if needed
 # macro_df = pd.read_csv('data/merged_with_macroeco_indice.csv')
 
@@ -90,7 +90,7 @@ def get_change_point():
 
 @app.route('/api/corr_matrix', methods=['GET'])
 def get_macro_correlation():
-    macro_df = pd.read_csv('data/merged_with_macroeco_indice.csv')
+    macro_df = pd.read_csv('public/merged_with_macroeco_indice.csv')
     macro_df.set_index("Date", inplace=True)
     correlation_dict = macro_df.corr().round(2).to_dict(orient='index')
     return jsonify(correlation_dict)
