@@ -54,10 +54,13 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import pandas as pd
-import datetime
+from datetime import datetime
 import numpy as np
 import sys
 import os
+import joblib
+import pickle
+from datetime import timedelta
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -66,6 +69,30 @@ CORS(app)
 # Load data
 df = pd.read_csv('public/brent_oil_price_data.csv')
 
+#Load model and scalar
+model_path='public/lstm-06-11-2024-04-52-41-00.pkl'
+scaler_path='public/scaler.joblib'
+
+def lstm_predict_future(data, model_path, scaler_path, predict_days=30, time_step=60):
+    with open(model_path, 'rb') as file:
+        model = pickle.load(file)
+    scaler = joblib.load(scaler_path)
+    last_data = data[['Price']].values[-time_step:]
+    last_data_scaled = scaler.transform(last_data.reshape(-1, 1))
+    input_seq = last_data_scaled.reshape(1, time_step, 1)
+    predictions = []
+    current_date = pd.to_datetime(data['Date'].iloc[-1]) + timedelta(days=1)
+
+    for _ in range(predict_days):
+        predicted_price_scaled = model.predict(input_seq)
+        predicted_price = scaler.inverse_transform(predicted_price_scaled)[0][0]
+        predictions.append((current_date, predicted_price))
+        input_seq = np.append(input_seq[:, 1:, :], [[predicted_price_scaled[0]]], axis=1)
+        current_date += timedelta(days=1)
+    prediction_df = pd.DataFrame(predictions, columns=['Date', 'Predicted Price'])
+    
+    return prediction_df
+        
 
 ###################### ROUTES ################################
 @app.route('/api/time_series', methods=['GET'])
@@ -93,6 +120,19 @@ def get_macro_correlation():
     macro_df.set_index("Date", inplace=True)
     correlation_dict = macro_df.corr().round(2).to_dict(orient='index')
     return jsonify(correlation_dict)
+
+@app.route('/api/predict', methods=['POST'])
+def predict():
+    data = request.get_json()
+    start_date = datetime.strptime(data['start_date'], '%Y-%m-%d')
+    end_date = datetime.strptime(data['end_date'], '%Y-%m-%d')
+    
+    num_days = (end_date - start_date).days
+    predictions=lstm_predict_future(df, model_path, scaler_path, num_days)
+    
+    response_data = predictions.to_dict(orient='dict')
+    
+    return jsonify(response_data)
 
 # Define a health check route
 @app.route('/health', methods=['GET'])

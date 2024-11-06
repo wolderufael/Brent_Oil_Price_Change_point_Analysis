@@ -31,6 +31,7 @@ const PriceChart = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
+          // "http://localhost:5000/api/time_series"
           "https://brent-oil-price-change-point-analysis.onrender.com/api/time_series"
         );
           const data = response.data;

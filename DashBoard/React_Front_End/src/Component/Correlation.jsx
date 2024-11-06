@@ -11,6 +11,7 @@ const HeatMapComponent = () => {
     // Fetch data from the API endpoint
     axios
       .get(
+        // "http://localhost:5000/api/corr_matrix"
         "https://brent-oil-price-change-point-analysis.onrender.com/api/corr_matrix"
       ) // Replace with your API endpoint
       .then((response) => {

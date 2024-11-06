@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Link, NavLink } from "react-router-dom";
 import { useState } from "react";
 import DashBoard from "./DashBoard";
 import Home from "./Component/Home";
+import PredictionPlot from "./Component/PredictionPlot";
 
 
 
@@ -27,7 +28,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />}></Route>
             <Route path="/dashboard" element={<DashBoard />}></Route>
-            <Route path="/prediction" element={<DashBoard />}></Route>
+            <Route path="/prediction" element={<PredictionPlot />}></Route>
           </Routes>
     </BrowserRouter>
   );
