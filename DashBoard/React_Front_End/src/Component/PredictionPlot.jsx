@@ -29,8 +29,8 @@ const PredictionPlot = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/predict",
-        // "https://brent-oil-price-change-point-analysis.onrender.com/api/predict",
+        // "http://localhost:5000/api/predict",
+        "https://brent-oil-price-change-point-analysis.onrender.com/api/predict",
         {
           start_date: startDate.toISOString().split("T")[0],
           end_date: endDate.toISOString().split("T")[0],

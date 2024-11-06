@@ -12,6 +12,7 @@ import {
   Legend,
 } from "chart.js";
 import annotationPlugin from "chartjs-plugin-annotation";
+import { ClipLoader } from "react-spinners";
 
 // Register the required components and plugins
 ChartJS.register(
@@ -70,7 +71,12 @@ const PriceChart = () => {
   }, []);
 
   // If the data hasn't loaded yet, show a loading message
-  if (!chartData) return <div>Loading...</div>;
+  if (!chartData) return (
+    <div className="spinner-container">
+      <ClipLoader color="#5a1ee7" size={100} />
+      <p>Loading ...</p>
+    </div>
+  );
 
   // Configure annotations for each change point date
   const annotations = chartData.changePoints.map((date) => ({

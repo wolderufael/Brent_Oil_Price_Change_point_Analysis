@@ -3,6 +3,7 @@ import axios from "axios";
 import { HeatMap } from "@nivo/heatmap";
 import { scaleSequential } from "d3-scale";
 import { interpolateBlues } from "d3-scale-chromatic";
+import { ClipLoader } from "react-spinners";
 
 const HeatMapComponent = () => {
   const [data, setData] = useState([]);
@@ -36,7 +37,7 @@ const HeatMapComponent = () => {
   }, []);
 
   return (
-    <div style={{ height: "500px" ,margin: "0 auto"}}>
+    <div style={{ height: "500px", margin: "0 auto" }}>
       <p className="plot-title">Correlation Matrix</p>
       {data.length > 0 ? (
         <HeatMap
@@ -92,7 +93,10 @@ const HeatMapComponent = () => {
           motionConfig="wobbly"
         />
       ) : (
-        <p>Loading data...</p>
+        <div className="spinner-container">
+          <ClipLoader color="#5a1ee7"  size={100} />
+          <p>Loading ...</p>
+        </div>
       )}
     </div>
   );

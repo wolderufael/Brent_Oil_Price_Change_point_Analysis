@@ -11,6 +11,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { ClipLoader } from "react-spinners";
 
 // Register the required components
 ChartJS.register(
@@ -65,7 +66,12 @@ const PriceChart = () => {
   }, []);
 
   // If the data hasn't loaded yet, show a loading message
-  if (!chartData) return <div>Loading...</div>;
+  if (!chartData) return (
+    <div className="spinner-container">
+      <ClipLoader color="#5a1ee7"  size={100} />
+      <p>Loading ...</p>
+    </div>
+  );
 
   return (
     <div className="chart-container">
