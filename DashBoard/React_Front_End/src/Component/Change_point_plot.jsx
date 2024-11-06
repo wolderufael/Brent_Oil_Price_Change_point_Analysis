@@ -52,7 +52,7 @@ const PriceChart = () => {
             {
               label: "Price",
               data: prices,
-              borderColor: "#062b2b",
+              borderColor: "#4db633",
               backgroundColor: "#77a770",
               fill: true,
             },
@@ -98,11 +98,17 @@ const PriceChart = () => {
           scales: {
             x: {
               title: { display: true, text: "Date" },
+              ticks: {
+                color: "#fff", // Color for x-axis labels
+              },
               type: "category", // Ensure the x-axis is treated as categorical data
               labels: chartData.labels, // Pass labels explicitly
             },
             y: {
               title: { display: true, text: "Price" },
+              ticks: {
+                color: "#fff", // Color for y-axis labels
+              },
             },
           },
           plugins: {
