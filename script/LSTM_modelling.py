@@ -4,6 +4,7 @@ import pickle
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import joblib
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense, Dropout
@@ -22,6 +23,9 @@ class LSTM_Modelling:
         scaler = MinMaxScaler(feature_range=(0, 1))
         train_scaled = scaler.fit_transform(train_data.values.reshape(-1, 1))
         test_scaled = scaler.transform(test_data.values.reshape(-1, 1))
+        
+        # Save the fitted scaler for future use
+        joblib.dump(scaler, 'models/scaler.joblib')
 
         # Function to create dataset with time steps
         def create_dataset(data, time_step=1):
@@ -51,7 +55,8 @@ class LSTM_Modelling:
         model.compile(optimizer='adam', loss='mean_squared_error')
 
         # Train the model
-        history = model.fit(X_train, y_train, epochs=10, batch_size=32, validation_data=(X_test, y_test), verbose=1)
+        # history = model.fit(X_train, y_train, epochs=10, batch_size=32, validation_data=(X_test, y_test), verbose=1)
+        history = model.fit(X_train, y_train, epochs=10, batch_size=32, verbose=1)
 
         # Make predictions on the test set
         train_predict = model.predict(X_train)
@@ -63,8 +68,9 @@ class LSTM_Modelling:
         y_train = scaler.inverse_transform(y_train.reshape(-1, 1))
         y_test = scaler.inverse_transform(y_test.reshape(-1, 1))
         
+        #Save the model in .pkl format
         # Create the folder if it doesn't exist
-        folder_path='/models'
+        folder_path='models/'
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
         
