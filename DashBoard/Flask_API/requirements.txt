@@ -7,5 +7,6 @@ scikit-learn
 joblib
 yfinance
 keras
+tensorflow
 # pickle
 # gd
