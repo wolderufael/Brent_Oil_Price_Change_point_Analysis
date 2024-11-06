@@ -8,7 +8,7 @@ import PredictionPlot from "./Component/PredictionPlot";
 
 
 const App = () => {
-  const val = useState(null);
+  // const val = useState(null);
   return (
     <BrowserRouter>
           <header>
