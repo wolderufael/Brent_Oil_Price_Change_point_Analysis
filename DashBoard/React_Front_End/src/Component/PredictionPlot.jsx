@@ -75,7 +75,9 @@ const PredictionPlot = () => {
           <DatePicker
             selected={startDate}
             onChange={(date) => setStartDate(date)}
-            minDate={new Date()}
+            // minDate={new Date()}
+            minDate={new Date("2000-01-01")}
+            maxDate={new Date(new Date().setDate(new Date().getDate() - 1))}
           />
         </div>
         <div>

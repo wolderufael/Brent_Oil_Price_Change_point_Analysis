@@ -83,17 +83,16 @@ def get_macro_correlation():
 @app.route('/api/predict', methods=['POST'])
 def predict():
     data = request.get_json()
-    print(data)
+    # print(data)
     start_date = datetime.strptime(data['start_date'], '%Y-%m-%d')
-    # start_date = datetime.strptime('2022-11-14', '%Y-%m-%d')
-    # start_date='2022-11-14 00:00:00'
     end_date = datetime.strptime(data['end_date'], '%Y-%m-%d')
-    print(start_date,end_date)
+    # print(start_date,end_date)
     
     num_days = (end_date - start_date).days
     predictions=lstm_predict_future(model, scaler,start_date, num_days)
     
     response_data = predictions.to_dict(orient='dict')
+    # print(response_data)
     
     return jsonify(response_data)
 
