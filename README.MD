@@ -27,6 +27,7 @@ Providing insights into the factors driving oil market volatility.
 Change Point Detection: Applies libraries such as ruptures and pymc3 to identify and visualize abrupt changes in the time series data.
 
 - **Event-Based Analysis**: Associates detected change points with major historical events to explain underlying causes.
+**Modelling and Prediction** : historical price data is used to predict future price.
 
 ## Project Structure
 ├── .github.<br>
@@ -35,13 +36,29 @@ Change Point Detection: Applies libraries such as ruptures and pymc3 to identify
 ├── .venv <br>
 ├── .vscode<br>
 │   └── settings.json<br>
+├── DashBoard<br>
+│   └── Flask_API<br>
+│   |    └── image<br>
+│   |    └── public<br>
+│   |    └── api,py<br>
+├───|              
+│   └── React_Front_End<br>
+│       └── public<br>
+│       └── src<br>
+│       └── index.html<br>
+│       └── package.json<br>
 ├── notebook<br>
+│   ├── ARIMA_model.ipynb<br>
+│   ├── change_point_analysis.ipynb<br>
+│   ├── LSTM_Model.ipynb<br>
 │   ├── preprocessing and EDA.ipynb><br>
-│   ├── time_series_&_change_point_analysis.ipynb<br>
+│   ├──statistical_and_econometric_model.ipynb<br>
 │
 ├──script<br>
-|   ├──preprocessing_and_EDA.py<br>
-│   ├─time_series_and_change_point_analysis.py<br>
+|   ├──ARIMA_modelling.py<br>
+|   ├──change_point_analysis.py<br>
+|   ├──LSTM_modelling.py<br>
+│   ├─preprocessing_and_EDA.py<br>
 │   
 ├── .gitignore<br>
 ├──  README.MD<br>
@@ -49,6 +66,9 @@ Change Point Detection: Applies libraries such as ruptures and pymc3 to identify
 ## Results
 ![Timeseries Plot](Result/ts.png)
 ![Change Point Plot](Result/cp.png)
+![LSTM model result](Result/lstm_output.png)
+![ARIMA model result](Result/arima_output.png)
+![VAR model result](Result/var_output.png)
 ## Installation
 
 1. **Clone the repository**:
