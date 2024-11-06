@@ -5,4 +5,5 @@ datetime
 numpy 
 scikit-learn 
 joblib
-pickle
+# pickle
+# gd
