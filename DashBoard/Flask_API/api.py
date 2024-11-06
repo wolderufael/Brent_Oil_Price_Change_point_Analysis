@@ -65,8 +65,7 @@ CORS(app)
 
 # Load data
 df = pd.read_csv('public/brent_oil_price_data.csv')
-# Uncomment and load the macroeconomic data if needed
-# macro_df = pd.read_csv('data/merged_with_macroeco_indice.csv')
+
 
 ###################### ROUTES ################################
 @app.route('/api/time_series', methods=['GET'])
